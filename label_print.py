@@ -42,6 +42,8 @@ def draw_label(name, description, date, serial=None):
 
 
 def send_to_printer(image):
+    print("printing label")
+
     qlr = BrotherQLRaster(MODEL)
     qlr.exception_on_warning = True
     instructions = convert(
@@ -59,6 +61,7 @@ def send_to_printer(image):
     )
 
     send(instructions=instructions, printer_identifier=PRINTER, backend_identifier=BACKEND, blocking=True)
+    print("printing done")
 
 
 def print_project_box_label(name=None, serial=None):
