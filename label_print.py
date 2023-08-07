@@ -67,7 +67,10 @@ def send_to_printer(image):
             cut=True
         )
 
-        send(instructions=instructions, printer_identifier=PRINTER, backend_identifier=BACKEND, blocking=True)
+        try:
+            send(instructions=instructions, printer_identifier=PRINTER, backend_identifier=BACKEND, blocking=True)
+        except FileNotFoundError:
+            print("Tried printing with printer unplugged")
     print("printing done")
 
 
