@@ -1,11 +1,13 @@
 import label_print
 import RPi.GPIO as GPIO
 import time
+import sys
 
 PROJECT_BOX_BUTTON = 23
 SHORT_STAY_BUTTON = 24
 
 DEBOUNCE_TIME = 0.2
+BUTTON_STUCK_TIME = 20.0
 
 def check_channel(channel, callback):
     if GPIO.input(channel):
@@ -23,6 +25,11 @@ def check_channel(channel, callback):
         # Wait for button to be released before finishing
         while GPIO.input(channel):
             time.sleep(0.1)
+            # If a button is stuck then quit the program as we don't
+            # want to risk emptying all the labels overnight
+            if time.monotonic() - start > BUTTON_STUCK_TIME:
+                print(f"Button {channel} stuck. Existing to avoid wasting labels.")
+                sys.exit(0)
 
 
 def main():
